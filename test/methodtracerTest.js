@@ -84,5 +84,73 @@ describe('methodtracer', function() {
     });
   });
 
+  describe('no logging when logging is not enabled', function() {
+    var messages = [], mt;
+
+    before(function(done) {
+      mt = methodtracer.create({ log: function(message) { messages.push(message); }, isLogEnabledFn: function() { return false; } });
+      (function() {
+        var cb = mt.init('f1').callback(done);
+        process.nextTick(function() { cb(null, 'the result'); });
+      })();
+    });
+
+    it('should not log anything', function() {
+      messages.length.should.eql(0);
+    });
+  });
+
+  describe('alternative message generation methods', function() {
+    var messages = [], mt;
+
+    before(function(done) {
+      mt = methodtracer.create( { log: function(message) { messages.push(message); },
+                                  getInMessage: function(mt) { return 'IN: ' + mt.methodcall; },
+                                  getOutOkMessage: function(mt, args) { return 'OUT: ' + mt.methodcall; } });
+      (function() {
+        var cb = mt.init('f1').callback(done);
+        process.nextTick(cb);
+      })();
+    });
+
+    it('should log two messages', function() {
+      messages.length.should.eql(2);
+    });
+
+    it('should log the custom "in" message', function() {
+      messages[0].should.eql('IN: f1()');
+    });
+
+    it('should log the custom "out" message', function() {
+      messages[1].should.eql('OUT: f1()');
+    });
+  });
+
+  describe('synchronous operation', function() {
+    var messages = [], mt = methodtracer.create({ log: function(m) { messages.push(m); } });
+
+    function theTestFunction(param1) {
+      var mt_ = mt.init('theTestFunction', param1);
+      // do stuff
+      return mt_.result('the result');
+    }
+
+    it('should return the result', function() {
+      var result = theTestFunction('the parameter');
+      result.should.eql('the result');
+    });
+
+    it('should log two messages', function() {
+      messages.length.should.eql(2);
+    });
+
+    it('should log the entry message', function() {
+      messages[0].should.eql('>>> theTestFunction("the parameter")');
+    });
+
+    it('should log the exit message', function() {
+      messages[1].should.match(/<<< theTestFunction\("the parameter"\): result=\("the result"\) \([0-9]+ms\)/);
+    });
+  });    
 
 });

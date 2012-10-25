@@ -1,11 +1,17 @@
 {
-  "name": "method-tracer",
+  "name": "methodtracer",
   "description": "Library for tracing method entry and exit.",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "homepage": "http://github.com/danbell/methodtracer-node",
+  "author": "Daniel Bell <daniel.m.bell@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "http://github.com/danbell/methodtracer-node.git"
   },
+  "bugs": {
+    "url": "http://github.com/danbell/methodtracer-node/issues"
+   },
+  "main": "./lib/methodtracer",
   "directories": {
     "lib": "./lib",
     "test": "./test"
