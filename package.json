@@ -1,0 +1,25 @@
+{
+  "name": "method-tracer",
+  "description": "Library for tracing method entry and exit.",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "directories": {
+    "lib": "./lib",
+    "test": "./test"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha" : "1.x",
+    "should" : ""
+  },
+  "engines": {
+    "node": ">= 0.8.x",
+    "npm": ">= 1.0.0"
+  },
+  "scripts": {
+  }
+}
