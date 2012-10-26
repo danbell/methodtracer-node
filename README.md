@@ -53,3 +53,12 @@ The methodtracer.create method takes a configuration object:
     }
     
 of which only the "log" function is required.
+
+### log4js
+
+If you are using log4js for logging, then you can use the methodtracer.createLog4js 
+method to create the methodtracer:
+
+    var log4js = require('log4js'),
+    logger = log4js.getLogger('the-category'),
+    methodtracer = require('methodtracer').createLog4js(logger, log4js.levels.DEBUG);
