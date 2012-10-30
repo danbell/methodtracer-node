@@ -41,6 +41,10 @@ For synchronous usage:
         return mt.result('the result');
     }
 
+### disabling
+
+All method tracing can be disabled by setting the environment variable NODE_METHOD_TRACER_DISABLED to a value.
+
 ## configuration
 
 The methodtracer.create method takes a configuration object:
