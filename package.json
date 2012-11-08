@@ -11,7 +11,7 @@
   "bugs": {
     "url": "http://github.com/danbell/methodtracer-node/issues"
    },
-  "main": "./lib/methodtracer",
+  "main": "./lib/index",
   "directories": {
     "lib": "./lib",
     "test": "./test"

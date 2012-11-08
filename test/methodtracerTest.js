@@ -1,5 +1,5 @@
 var should = require('should'),
-methodtracer = require('../lib/methodtracer');
+methodtracer = require('../lib/index');
 
 describe('methodtracer', function() {
   describe('#create', function() {

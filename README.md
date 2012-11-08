@@ -14,12 +14,12 @@ npm install methodtracer
 For standard asynchronous usage:
 
     var logger = ...,
-    methodtracer = require('methodtracer').create({ 
+    mt = require('methodtracer').create({ 
         log: function(message, exception) { logger.debug(message, exception); }
     });
     
     function my_method(param1, param2, callback) {
-        callback = methodtracer.init('my_method', param1, param2).callback(callback);
+        callback = mt.init('my_method', param1, param2).callback(callback);
         
         // do stuff
         
@@ -34,12 +34,51 @@ Output:
 For synchronous usage:
 
     function my_method_sync(param1, param2) {
-        mt = methodtracer.init('my_method', param1, param2);
+        var mts = mt.init('my_method', param1, param2);
         
         // do stuff
         
-        return mt.result('the result');
+        return mts.result('the result');
     }
+
+### External or thirdparty functions
+
+Sometimes we may want to trace calls to an external or thirdparty function, which we can't modify to put the 
+methodtracer code into. In this case, we use the methodtracer.external.wrap() method.
+
+For asynchronous usage:
+
+    var methodtracer = require('methodtracer'),
+    mt = methodtracer.create(...);
+
+    function my_thirdparty_func(a, b, cb) { ... } // external function to be traced
+
+    var my_thirdparty_func_traced = methodtracer.external.wrap(mt, my_thirdparty_func);
+
+    my_thirdparty_func_traced(1, 2, function(error, result) { ... });
+
+An options object may also be passed as the third parameter to the methodtracer.external.wrap() method:
+
+   {
+     thisArg: null, // optional "this" to be set when calling the external method
+     name: null,    // optional function name to be used
+     getCallback: null, // optional method to call to retrieve callback from argument list
+                        // see methodtracer.external.getLastArg or 
+                        // methodtracer.external.getFirstArg
+     sync: false // optional boolean which specifies if method is synchronous/asynchronous
+   }
+
+For synchronous usage:
+
+    var methodtracer = require('methodtracer'),
+    mt = methodtracer.create(...);
+
+    function my_thirdparty_func(a, b) { ... }
+
+    var my_thirdparty_func_traced = methodtracer.external.wrap(mt, my_thirdparty_func, { sync: true });
+
+    var result = my_thirdparty_func_traced(1, 2);
+    
 
 ### disabling
 
