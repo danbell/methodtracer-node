@@ -59,14 +59,14 @@ For asynchronous usage:
 
 An options object may also be passed as the third parameter to the methodtracer.external.wrap() method:
 
-   {
-     thisArg: null, // optional "this" to be set when calling the external method
-     name: null,    // optional function name to be used
-     getCallback: null, // optional method to call to retrieve callback from argument list
-                        // see methodtracer.external.getLastArg or 
-                        // methodtracer.external.getFirstArg
-     sync: false // optional boolean which specifies if method is synchronous/asynchronous
-   }
+    {
+      thisArg: null, // optional "this" to be set when calling the external method
+      name: null,    // optional function name to be used
+      getCallback: null, // optional method to call to retrieve callback from argument list
+                         // see methodtracer.external.getLastArg or 
+                         // methodtracer.external.getFirstArg
+      sync: false // optional boolean which specifies if method is synchronous/asynchronous
+    }
 
 For synchronous usage:
 
