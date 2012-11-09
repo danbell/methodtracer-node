@@ -114,10 +114,12 @@ describe('methodtracer.external', function() {
     });
 
     describe('with asynchronous function', function() {
-      var mt = createMockMt(), result;
+      var mt = createMockMt(), result, sresult;
       before(function(done) {
-        var f = methodtracer.external.wrap(mt, function(a, b, cb) { cb(null, a+b); }, { name: 'asyncsum' });
-        f(3, 4, function(error, r) {
+        var f = methodtracer.external.wrap(mt, function(a, b, cb) { 
+          cb(null, a+b); return 'sync result'; 
+        }, { name: 'asyncsum' });
+        sresult = f(3, 4, function(error, r) {
           result = r;
           done();
         });
@@ -125,6 +127,9 @@ describe('methodtracer.external', function() {
       it('should provide the correct result', function() {
         result.should.eql(7);
       });      
+      it('should return any synchronous result returned by the function', function() {
+        sresult.should.eql('sync result');
+      });
       it('should log a function entry message', function() {
         mt.messages.length.should.eql(2);
         mt.messages[0].should.eql('>>> asyncsum(3, 4, [Function])');
