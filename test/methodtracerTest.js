@@ -1,5 +1,6 @@
 var should = require('should'),
-methodtracer = require('../lib/index');
+methodtracer = require('../lib/index'),
+util = require('util');
 
 describe('methodtracer', function() {
   describe('#create', function() {
@@ -43,7 +44,7 @@ describe('methodtracer', function() {
       mt = methodtracer.create({ log: function(message) { messages.push(message); } });
       (function() {
         var cb = mt.init('f1').callback(done);
-        setTimeout(function() { cb(null, 'the result') }, 100);
+        setTimeout(function() { cb(null, 'the result'); }, 100);
       })();
     });
 
@@ -67,7 +68,7 @@ describe('methodtracer', function() {
       mt = methodtracer.create({ log: function(message) { messages.push(message); } });
       (function() {
         var cb = mt.init('f1').callback(function() { done(null); });
-        setTimeout(function() { cb(new Error('the error')) }, 100);
+        setTimeout(function() { cb(new Error('the error')); }, 100);
       })();
     });
 
@@ -153,4 +154,18 @@ describe('methodtracer', function() {
     });
   });    
 
+  describe('#getParamString1', function() {
+    it('should return util.inspect on an object', function() {
+      var a = { field: 1, field2: 'abc' };
+      methodtracer.getParamString1(a).should.eql(util.inspect(a));
+      util.inspect(a).should.eql('{ field: 1, field2: \'abc\' }');
+    });
+  });
+
+  describe('#getParamString', function() {
+    it('should return util.inspect on each object in an array', function() {
+      var objs = [ { field: 1 }, { field2: 'abc' } ];
+      methodtracer.getParamString(objs).should.eql(objs.map(util.inspect).join(', '));
+    });
+  });
 });
